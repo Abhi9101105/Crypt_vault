@@ -25,14 +25,69 @@ Want to test the app? Download these sample files and upload them to CryptVault:
 | [`evidence_notes.txt`](sample_dataset/evidence_notes.txt) | TXT | Forensic evidence notes |
 | [`sample_financial_records.csv`](sample_dataset/sample_financial_records.csv) | CSV | Financial transaction records |
 
-**Quick test flow:**
+---
+
+### 📋 Demo Scenario 1 — Quick Start (Single User)
+
 1. Open the [Live Demo](https://crypt-vault-ashy.vercel.app)
-2. Register an account (first user = admin)
-3. Upload any of the sample files above
-4. Click ⋮ → **Download** to verify decryption works
-5. Click ⋮ → **Verify Integrity** to confirm SHA-256 check
-6. Upload the same file again to see **auto-versioning**
-7. Check the **Audit** tab to see your actions logged
+2. Click **Create Account** → Register as `admin1` / `admin@vault.io` / `SecurePass123!@`
+3. Login with the same credentials
+4. Click **Upload** → drag in `test_upload_report.txt`
+5. Click ⋮ → **Download** → verify the decrypted content matches
+6. Click ⋮ → **Verify Integrity** → should show "Integrity check passed ✓"
+7. Upload `test_upload_report.txt` again → version badge changes to **v2** (auto-versioning)
+8. Click ⋮ → **Version History** → see both versions, download v1 to compare
+9. Check the **Audit** tab in the sidebar → all your actions are logged with timestamps
+
+---
+
+### 📋 Demo Scenario 2 — File Sharing & ACL (Two Users)
+
+**Step 1: Setup as Admin**
+1. Login as `admin1` (or register if fresh deploy)
+2. Upload `sample_financial_records.csv`
+3. Click ⋮ → **Share** → Users tab
+4. Type `analyst1` in the username field, select **Read** permission → click **Share**
+
+**Step 2: Switch to second user**
+5. Click your username in the sidebar → **Logout**
+6. Click **Create Account** → Register as `analyst1` / `analyst@vault.io` / `SecurePass123!@`
+7. Login as `analyst1`
+
+**Step 3: Verify shared access**
+8. ✅ You should see `sample_financial_records.csv` in your file list (shared by admin)
+9. Click ⋮ → **Download** → ✅ works (you have read permission)
+10. Click ⋮ → notice **Delete is missing** (you only have read access, not delete)
+11. Try uploading a new version of the same file → ❌ blocked (no write permission)
+
+**Step 4: Verify isolation**
+12. Upload a new file as `analyst1` (e.g., `evidence_notes.txt`)
+13. Logout → Login as `admin1`
+14. ✅ Admin can see their own files but **cannot** see `analyst1`'s private file (unless shared)
+
+---
+
+### 📋 Demo Scenario 3 — Admin Security & Anomaly Detection
+
+**Step 1: Trigger security alerts**
+1. Logout from any account
+2. Try logging in with `admin1` and **wrong passwords** — do this **6+ times** rapidly
+3. Login with the correct password
+
+**Step 2: Check admin dashboard**
+4. ✅ The **stat cards** at the top show updated "Failed Logins" count
+5. Click **Alerts** in the sidebar → ✅ You'll see flagged events with risk scores (65+)
+6. Each alert shows the reason (e.g., "failed_login burst from same user")
+7. Click the **eye icon** to acknowledge → click **X** to dismiss
+
+**Step 3: Review audit trail**
+8. Click **Audit** in the sidebar
+9. ✅ Every action is logged: login, failed_login, upload, download, share, delete
+10. Use the **filter dropdown** to view only specific action types
+11. ✅ Each log entry includes: user, action, resource, risk score, timestamp
+
+> 💡 **Note:** The admin dashboard (stats, audit, alerts) is only visible to the first registered user (admin role). Regular users see only their own files.
+
 
 ## ✨ Features
 
