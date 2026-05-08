@@ -1,0 +1,21 @@
+SecureVault Incident Report
+===========================
+
+Case ID: SV-2026-001
+Analyst: Demo Analyst
+Classification: Internal
+
+Summary:
+This sample file represents a short forensic incident report. It is safe to
+upload into SecureVault for testing AES encryption, SHA-256 hashing, download,
+integrity verification, and audit logging.
+
+Timeline:
+2026-05-05T09:15:00Z - User logged into SecureVault.
+2026-05-05T09:17:32Z - User uploaded confidential evidence.
+2026-05-05T09:19:04Z - Admin reviewed HMAC audit status.
+2026-05-05T09:22:15Z - User verified file integrity.
+
+Expected Test Result:
+After upload, the original plaintext should not appear inside vault/*.enc.
+The dashboard Verify Integrity button should return Intact.

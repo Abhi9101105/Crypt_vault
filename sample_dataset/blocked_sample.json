@@ -1,0 +1,5 @@
+{
+  "purpose": "This file is intentionally disallowed by the upload whitelist.",
+  "expected_result": "SecureVault should reject this upload because .json is not allowed.",
+  "allowed_extensions": [".pdf", ".txt", ".docx", ".png", ".jpg", ".csv"]
+}

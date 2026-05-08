@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Forensic Audit Dashboard | SecureVault{% endblock %}
+
+{% block content %}
+  <section class="dashboard-hero audit-hero">
+    <div>
+      <p class="eyebrow">Forensic Control</p>
+      <h1>Audit Dashboard</h1>
+      <p class="hero-meta">HMAC verification is recomputed on every page load.</p>
+    </div>
+    <a class="btn btn-aqua" href="{{ url_for('export_audit_logs') }}">Export Logs</a>
+  </section>
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Total</span>
+      <strong>{{ total_count }}</strong>
+    </div>
+    <div class="summary-card valid-card">
+      <span>Valid</span>
+      <strong>{{ valid_count }}</strong>
+    </div>
+    <div class="summary-card {% if tampered_count > 0 %}tampered-card{% endif %}">
+      <span>Tampered</span>
+      <strong>{{ tampered_count }}</strong>
+    </div>
+    <div class="summary-card last-card">
+      <span>Last Activity</span>
+      <strong>{{ last_activity }}</strong>
+    </div>
+  </section>
+
+  <section class="panel audit-panel">
+    <div class="filter-bar">
+      <label for="audit-filter" class="form-label mb-0">Filter logs</label>
+      <input
+        id="audit-filter"
+        type="search"
+        class="form-control vault-input"
+        placeholder="Search username, action, or date"
+        data-audit-filter
+      >
+    </div>
+
+    <div class="table-responsive audit-table-wrap">
+      <table class="table vault-table audit-table align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Username</th>
+            <th scope="col">Action</th>
+            <th scope="col">Filename</th>
+            <th scope="col">File Hash</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">Integrity Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries %}
+            <tr
+              class="{% if not entry.is_valid %}tampered-row{% endif %}"
+              data-audit-row
+              data-search="{{ entry.search_text }}"
+            >
+              <td>{{ entry.timestamp }}</td>
+              <td>{{ entry.username }}</td>
+              <td><span class="action-badge {{ entry.badge_class }}">{{ entry.action }}</span></td>
+              <td>{{ entry.filename }}</td>
+              <td class="hash-cell">{{ entry.display_hash }}</td>
+              <td>{{ entry.ip_address }}</td>
+              <td>
+                {% if entry.is_valid %}
+                  <span class="status-pill status-valid">✅ VALID</span>
+                {% else %}
+                  <span class="status-pill status-tampered blink">❌ TAMPERED</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="empty-state filter-empty" data-empty-filter hidden>
+      <h3>No matching logs</h3>
+      <p>Adjust the filter value and try again.</p>
+    </div>
+  </section>
+{% endblock %}

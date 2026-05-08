@@ -1,0 +1,14 @@
+Evidence Notes
+==============
+
+Item: USB image hash record
+SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Collected By: Demo Analyst
+Storage: SecureVault encrypted vault
+
+Checklist:
+- Upload this file.
+- Confirm the database stores the original SHA-256.
+- Confirm the vault stores only a .enc file.
+- Click Verify Integrity.
+- Download and compare the content with this original.

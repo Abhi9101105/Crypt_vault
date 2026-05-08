@@ -1,0 +1,4 @@
+SecureVault Phase 3 demo file.
+
+This plaintext file is used only as a local upload sample.
+After upload, the application stores only the encrypted .enc version in vault/.

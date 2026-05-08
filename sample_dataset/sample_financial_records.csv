@@ -1,0 +1,6 @@
+record_id,date,account,description,amount,currency,review_status
+1001,2026-05-01,OPS-100,Cloud hosting invoice,249.99,USD,approved
+1002,2026-05-02,OPS-210,Security monitoring subscription,89.50,USD,approved
+1003,2026-05-03,FIN-420,Travel reimbursement,315.25,USD,pending
+1004,2026-05-04,SEC-007,Incident response toolkit,1299.00,USD,approved
+1005,2026-05-05,IT-314,Backup storage expansion,540.75,USD,pending

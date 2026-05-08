@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Register | SecureVault{% endblock %}
+
+{% block content %}
+  <section class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-heading">
+        <p class="eyebrow">Secure Access</p>
+        <h1>Create Account</h1>
+      </div>
+      <form method="post" action="{{ url_for('register') }}" class="vault-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control vault-input"
+            id="username"
+            name="username"
+            value="{{ username or '' }}"
+            autocomplete="username"
+            required
+          >
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control vault-input"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+        <div class="mb-3">
+          <label for="confirm_password" class="form-label">Confirm password</label>
+          <input
+            type="password"
+            class="form-control vault-input"
+            id="confirm_password"
+            name="confirm_password"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+        <button type="submit" class="btn btn-aqua w-100">Create Account</button>
+      </form>
+      <p class="auth-switch">
+        Already registered?
+        <a href="{{ url_for('login') }}">Login</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}

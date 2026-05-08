@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | SecureVault{% endblock %}
+
+{% block content %}
+  <section class="dashboard-hero">
+    <div>
+      <p class="eyebrow">Personal Vault</p>
+      <h1>Welcome, {{ username }}</h1>
+      <p class="hero-meta">Last login: {{ last_login_at }}</p>
+    </div>
+  </section>
+
+  <section class="panel upload-panel">
+    <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input
+        class="visually-hidden"
+        type="file"
+        id="file"
+        name="file"
+        accept=".pdf,.txt,.docx,.png,.jpg,.csv"
+        required
+      >
+      <label for="file" class="drop-zone" data-drop-zone>
+        <span class="drop-zone-title">Drop file here or click to upload</span>
+        <span class="drop-zone-subtitle" data-file-name>PDF, TXT, DOCX, PNG, JPG, CSV up to 10MB</span>
+      </label>
+      <button type="submit" class="btn btn-aqua upload-button">Encrypt & Store</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Your Files</h2>
+    </div>
+
+    {% if files %}
+      <div class="table-responsive vault-table-wrap">
+        <table class="table vault-table align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Filename</th>
+              <th scope="col">Uploaded At</th>
+              <th scope="col">File Hash</th>
+              <th scope="col">Verify</th>
+              <th scope="col" class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in files %}
+              <tr>
+                <td class="filename-cell">{{ file.original_filename }}</td>
+                <td>{{ file.uploaded_at }}</td>
+                <td class="hash-cell">{{ file.file_hash[:12] }}...</td>
+                <td>
+                  <div class="verify-group">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-aqua js-verify-file"
+                      data-verify-url="{{ url_for('verify_file', file_id=file.id) }}"
+                      data-result-target="verify-result-{{ file.id }}"
+                    >
+                      Verify Integrity
+                    </button>
+                    <span id="verify-result-{{ file.id }}" class="integrity-badge neutral">Unchecked</span>
+                  </div>
+                </td>
+                <td class="text-end action-cell">
+                  <a
+                    class="btn btn-sm btn-outline-success"
+                    href="{{ url_for('download', file_id=file.id) }}"
+                  >
+                    Download
+                  </a>
+                  <form
+                    method="post"
+                    action="{{ url_for('delete', file_id=file.id) }}"
+                    class="inline-form"
+                  >
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>No encrypted files yet</h3>
+        <p>Your uploaded files will appear here after encryption.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
