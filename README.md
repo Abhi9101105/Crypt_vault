@@ -1,4 +1,4 @@
-# 🔐 CryptVault — Secure File Vault
+# CryptVault — Secure File Vault
 
 A production-grade encrypted file storage system with AES-256-GCM encryption, JWT authentication, granular ACL permissions, version history, audit logging, and real-time anomaly detection.
 
@@ -8,13 +8,13 @@ A production-grade encrypted file storage system with AES-256-GCM encryption, JW
 ![SQLite](https://img.shields.io/badge/SQLite-WAL_Mode-003B57?logo=sqlite)
 ![Tests](https://img.shields.io/badge/Tests-87%2F87_Passing-brightgreen)
 
-### 🌐 [Live Demo → crypt-vault-ashy.vercel.app](https://crypt-vault-ashy.vercel.app)
+### [Live Demo → crypt-vault-ashy.vercel.app](https://crypt-vault-ashy.vercel.app)
 
 > **First user to register becomes admin.** Free tier backend may take ~30s to wake from cold start.
 
 ---
 
-## 🧪 Try It Out
+## Try It Out
 
 Want to test the app? Download these sample files and upload them to CryptVault:
 
@@ -27,21 +27,21 @@ Want to test the app? Download these sample files and upload them to CryptVault:
 
 ---
 
-### 📋 Demo Scenario 1 — Quick Start (Single User)
+### Demo Scenario 1 — Quick Start (Single User)
 
 1. Open the [Live Demo](https://crypt-vault-ashy.vercel.app)
 2. Click **Create Account** → Register as `admin1` / `admin@vault.io` / `SecurePass123!@`
 3. Login with the same credentials
 4. Click **Upload** → drag in `test_upload_report.txt`
 5. Click ⋮ → **Download** → verify the decrypted content matches
-6. Click ⋮ → **Verify Integrity** → should show "Integrity check passed ✓"
+6. Click ⋮ → **Verify Integrity** → should show "Integrity check passed"
 7. Upload `test_upload_report.txt` again → version badge changes to **v2** (auto-versioning)
 8. Click ⋮ → **Version History** → see both versions, download v1 to compare
 9. Check the **Audit** tab in the sidebar → all your actions are logged with timestamps
 
 ---
 
-### 📋 Demo Scenario 2 — File Sharing & ACL (Two Users)
+### Demo Scenario 2 — File Sharing & ACL (Two Users)
 
 **Step 1: Setup as Admin**
 1. Login as `admin1` (or register if fresh deploy)
@@ -50,24 +50,24 @@ Want to test the app? Download these sample files and upload them to CryptVault:
 4. Type `analyst1` in the username field, select **Read** permission → click **Share**
 
 **Step 2: Switch to second user**
-5. Click your username in the sidebar → **Logout**
-6. Click **Create Account** → Register as `analyst1` / `analyst@vault.io` / `SecurePass123!@`
-7. Login as `analyst1`
+1. Click your username in the sidebar → **Logout**
+2. Click **Create Account** → Register as `analyst1` / `analyst@vault.io` / `SecurePass123!@`
+3. Login as `analyst1`
 
 **Step 3: Verify shared access**
-8. ✅ You should see `sample_financial_records.csv` in your file list (shared by admin)
-9. Click ⋮ → **Download** → ✅ works (you have read permission)
-10. Click ⋮ → notice **Delete is missing** (you only have read access, not delete)
-11. Try uploading a new version of the same file → ❌ blocked (no write permission)
+1. You should see `sample_financial_records.csv` in your file list (shared by admin)
+2. Click ⋮ → **Download** → works (you have read permission)
+3. Click ⋮ → notice **Delete is missing** (you only have read access, not delete)
+4. Try uploading a new version of the same file → blocked (no write permission)
 
 **Step 4: Verify isolation**
-12. Upload a new file as `analyst1` (e.g., `evidence_notes.txt`)
-13. Logout → Login as `admin1`
-14. ✅ Admin can see their own files but **cannot** see `analyst1`'s private file (unless shared)
+1. Upload a new file as `analyst1` (e.g., `evidence_notes.txt`)
+2. Logout → Login as `admin1`
+3. Admin can see their own files but **cannot** see `analyst1`'s private file (unless shared)
 
 ---
 
-### 📋 Demo Scenario 3 — Admin Security & Anomaly Detection
+### Demo Scenario 3 — Admin Security & Anomaly Detection
 
 **Step 1: Trigger security alerts**
 1. Logout from any account
@@ -75,42 +75,41 @@ Want to test the app? Download these sample files and upload them to CryptVault:
 3. Login with the correct password
 
 **Step 2: Check admin dashboard**
-4. ✅ The **stat cards** at the top show updated "Failed Logins" count
-5. Click **Alerts** in the sidebar → ✅ You'll see flagged events with risk scores (65+)
-6. Each alert shows the reason (e.g., "failed_login burst from same user")
-7. Click the **eye icon** to acknowledge → click **X** to dismiss
+1. The **stat cards** at the top show updated "Failed Logins" count
+2. Click **Alerts** in the sidebar → You'll see flagged events with risk scores (65+)
+3. Each alert shows the reason (e.g., "failed_login burst from same user")
+4. Click the **eye icon** to acknowledge → click **X** to dismiss
 
 **Step 3: Review audit trail**
-8. Click **Audit** in the sidebar
-9. ✅ Every action is logged: login, failed_login, upload, download, share, delete
-10. Use the **filter dropdown** to view only specific action types
-11. ✅ Each log entry includes: user, action, resource, risk score, timestamp
+1. Click **Audit** in the sidebar
+2. Every action is logged: login, failed_login, upload, download, share, delete
+3. Use the **filter dropdown** to view only specific action types
+4. Each log entry includes: user, action, resource, risk score, timestamp
 
-> 💡 **Note:** The admin dashboard (stats, audit, alerts) is only visible to the first registered user (admin role). Regular users see only their own files.
+> **Note:** The admin dashboard (stats, audit, alerts) is only visible to the first registered user (admin role). Regular users see only their own files.
 
-
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| 🔑 **Authentication** | JWT access + refresh tokens, Argon2 password hashing, role-based access (admin/user) |
-| 📁 **File Upload** | Multi-file drag-and-drop, progress tracking, file type validation (30+ types) |
-| 🔒 **Encryption at Rest** | AES-256-GCM with AAD, SHA-256 integrity hashing, keyring rotation support |
-| 📥 **Download & Decryption** | Streaming decryption, original filename/MIME restoration |
-| 🛡️ **Integrity Verification** | SHA-256 + GCM tag verification detects any blob tampering |
-| 📜 **Version History** | Auto-versioning for same-name uploads, per-version download |
-| ↩️ **Rollback** | Restore any previous version as current |
-| 👥 **File Sharing** | Share with users (read/write/delete ACL) or via expiring public links |
-| 🔗 **Secure Share Links** | Token-based public download links with configurable expiry |
-| 🗑️ **Delete** | Cascade blob cleanup from disk on deletion |
-| 📊 **Audit Logging** | Every action logged: login, upload, download, share, delete, rollback |
-| 🚨 **Anomaly Detection** | Risk scoring engine, failed-login burst detection, delete-spike alerts |
-| 🖥️ **Admin Dashboard** | Real-time stats, filterable audit logs, alert management |
-| 🎨 **Modern UI** | Dark-mode React frontend with glassmorphism, animations, and premium design |
+| **Authentication** | JWT access + refresh tokens, Argon2 password hashing, role-based access (admin/user) |
+| **File Upload** | Multi-file drag-and-drop, progress tracking, file type validation (30+ types) |
+| **Encryption at Rest** | AES-256-GCM with AAD, SHA-256 integrity hashing, keyring rotation support |
+| **Download & Decryption** | Streaming decryption, original filename/MIME restoration |
+| **Integrity Verification** | SHA-256 + GCM tag verification detects any blob tampering |
+| **Version History** | Auto-versioning for same-name uploads, per-version download |
+| **Rollback** | Restore any previous version as current |
+| **File Sharing** | Share with users (read/write/delete ACL) or via expiring public links |
+| **Secure Share Links** | Token-based public download links with configurable expiry |
+| **Delete** | Cascade blob cleanup from disk on deletion |
+| **Audit Logging** | Every action logged: login, upload, download, share, delete, rollback |
+| **Anomaly Detection** | Risk scoring engine, failed-login burst detection, delete-spike alerts |
+| **Admin Dashboard** | Real-time stats, filterable audit logs, alert management |
+| **Modern UI** | Dark-mode React frontend with glassmorphism, animations, and premium design |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 CryptVault/
@@ -151,7 +150,7 @@ CryptVault/
 
 ---
 
-## 🚀 Local Development
+## Local Development
 
 ### Prerequisites
 - Python 3.11+
@@ -187,11 +186,11 @@ npm run dev
 ### 4. Open
 Navigate to **http://127.0.0.1:5173**
 
-> ℹ️ The first registered user automatically becomes **admin**.
+> The first registered user automatically becomes **admin**.
 
 ---
 
-## ☁️ Production Deployment
+## Production Deployment
 
 ### Backend → Render
 
@@ -265,7 +264,7 @@ Navigate to **http://127.0.0.1:5173**
 
 ---
 
-## 🔐 Security Design
+## Security Design
 
 ### Encryption
 - **Algorithm**: AES-256-GCM (authenticated encryption)
@@ -291,7 +290,7 @@ Navigate to **http://127.0.0.1:5173**
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Automated (87 tests across 16 phases)
 ```bash
@@ -321,7 +320,7 @@ python3 test_all_phases.py
 
 ---
 
-## 📦 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -335,6 +334,6 @@ python3 test_all_phases.py
 
 ---
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details.
