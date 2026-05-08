@@ -6,8 +6,33 @@ A production-grade encrypted file storage system with AES-256-GCM encryption, JW
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green?logo=fastapi)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
 ![SQLite](https://img.shields.io/badge/SQLite-WAL_Mode-003B57?logo=sqlite)
+![Tests](https://img.shields.io/badge/Tests-87%2F87_Passing-brightgreen)
+
+### 🌐 [Live Demo → crypt-vault-ashy.vercel.app](https://crypt-vault-ashy.vercel.app)
+
+> **First user to register becomes admin.** Free tier backend may take ~30s to wake from cold start.
 
 ---
+
+## 🧪 Try It Out
+
+Want to test the app? Download these sample files and upload them to CryptVault:
+
+| File | Type | Description |
+|------|------|-------------|
+| [`test_upload_report.txt`](sample_dataset/test_upload_report.txt) | TXT | Simulated incident report (classified document) |
+| [`test_upload_audit.csv`](sample_dataset/test_upload_audit.csv) | CSV | Security audit log with risk scores |
+| [`evidence_notes.txt`](sample_dataset/evidence_notes.txt) | TXT | Forensic evidence notes |
+| [`sample_financial_records.csv`](sample_dataset/sample_financial_records.csv) | CSV | Financial transaction records |
+
+**Quick test flow:**
+1. Open the [Live Demo](https://crypt-vault-ashy.vercel.app)
+2. Register an account (first user = admin)
+3. Upload any of the sample files above
+4. Click ⋮ → **Download** to verify decryption works
+5. Click ⋮ → **Verify Integrity** to confirm SHA-256 check
+6. Upload the same file again to see **auto-versioning**
+7. Check the **Audit** tab to see your actions logged
 
 ## ✨ Features
 

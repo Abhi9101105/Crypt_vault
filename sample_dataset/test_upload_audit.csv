@@ -1,0 +1,16 @@
+timestamp,user_id,action,resource,ip_address,risk_score,status
+2026-05-08T14:32:00Z,usr_a1b2c3,login,auth-gateway,192.168.1.45,12,success
+2026-05-08T14:32:15Z,usr_a1b2c3,upload,vault-file-001,192.168.1.45,5,success
+2026-05-08T14:33:00Z,usr_d4e5f6,login,auth-gateway,10.0.3.77,45,success
+2026-05-08T14:33:22Z,usr_d4e5f6,download,vault-file-042,10.0.3.77,38,success
+2026-05-08T14:34:01Z,usr_unknown,login,auth-gateway,203.0.113.99,78,failed
+2026-05-08T14:34:03Z,usr_unknown,login,auth-gateway,203.0.113.99,82,failed
+2026-05-08T14:34:05Z,usr_unknown,login,auth-gateway,203.0.113.99,89,failed
+2026-05-08T14:34:08Z,usr_unknown,login,auth-gateway,203.0.113.99,95,failed
+2026-05-08T14:35:00Z,usr_a1b2c3,share,vault-file-001,192.168.1.45,15,success
+2026-05-08T14:36:12Z,usr_d4e5f6,delete,vault-file-018,10.0.3.77,62,success
+2026-05-08T14:37:00Z,usr_a1b2c3,verify,vault-file-001,192.168.1.45,5,intact
+2026-05-08T14:38:45Z,usr_g7h8i9,login,auth-gateway,172.16.0.12,8,success
+2026-05-08T14:39:10Z,usr_g7h8i9,upload,vault-file-099,172.16.0.12,5,success
+2026-05-08T14:40:00Z,usr_d4e5f6,rollback,vault-file-042,10.0.3.77,25,success
+2026-05-08T14:41:30Z,admin,flag_event,alert-burst-login,10.0.0.1,0,acknowledged

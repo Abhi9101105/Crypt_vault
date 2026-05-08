@@ -1,0 +1,39 @@
+CONFIDENTIAL — INCIDENT REPORT
+================================
+Date: 2026-05-08
+Classification: TOP SECRET
+Report ID: IR-2026-0508-ALPHA
+
+SUMMARY
+-------
+At approximately 14:32 UTC, the security operations team detected
+anomalous network activity originating from subnet 10.0.3.0/24.
+Preliminary analysis indicates unauthorized access to the internal
+file storage system. AES-256-GCM encrypted blobs were accessed but
+no evidence of successful decryption has been found.
+
+AFFECTED SYSTEMS
+----------------
+- Primary File Vault (vault-prod-01)
+- Authentication Gateway (auth-gw-03)
+- Audit Logging Pipeline (audit-stream-02)
+
+TIMELINE
+--------
+14:32 — Anomaly detection triggered (risk score: 78/100)
+14:35 — SOC analyst acknowledged alert
+14:41 — Incident response team activated
+14:58 — Compromised credentials identified and revoked
+15:12 — Full system lockdown initiated
+15:45 — Forensic imaging of affected systems completed
+16:00 — All-clear issued after verification
+
+RECOMMENDATIONS
+---------------
+1. Rotate all encryption keys immediately
+2. Enable burst-login detection thresholds
+3. Implement IP-based rate limiting
+4. Review ACL permissions for shared files
+5. Schedule quarterly penetration testing
+
+--- END OF REPORT ---
