@@ -22,7 +22,7 @@ A production-grade encrypted file storage system with AES-256-GCM encryption, JW
 | ↩️ **Rollback** | Restore any previous version as current |
 | 👥 **File Sharing** | Share with users (read/write/delete ACL) or via expiring public links |
 | 🔗 **Secure Share Links** | Token-based public download links with configurable expiry |
-| 🗑️ **Soft Delete** | Cascade blob cleanup from disk on deletion |
+| 🗑️ **Delete** | Cascade blob cleanup from disk on deletion |
 | 📊 **Audit Logging** | Every action logged: login, upload, download, share, delete, rollback |
 | 🚨 **Anomaly Detection** | Risk scoring engine, failed-login burst detection, delete-spike alerts |
 | 🖥️ **Admin Dashboard** | Real-time stats, filterable audit logs, alert management |
@@ -48,10 +48,9 @@ CryptVault/
 │   ├── config.py          # Pydantic settings from .env
 │   ├── crypto.py          # AES-256-GCM encrypt/decrypt
 │   ├── database.py        # SQLAlchemy engine + session
-│   ├── models.py          # ORM models (User, VaultFile, FileVersion, etc.)
+│   ├── models.py          # ORM models
 │   ├── schemas.py         # Pydantic request/response models
 │   ├── security.py        # JWT, password hashing, RBAC
-│   ├── websockets.py      # Real-time alert broadcasting
 │   └── main.py            # FastAPI app entry point
 ├── frontend/
 │   ├── src/
@@ -60,9 +59,11 @@ CryptVault/
 │   │   ├── store.jsx      # React Context state management
 │   │   ├── styles.css     # Dark-mode design system
 │   │   └── main.jsx       # App entry point
+│   ├── vercel.json        # Vercel SPA routing config
 │   ├── vite.config.js     # Vite + API proxy config
 │   └── package.json
 ├── vault/                 # Encrypted file storage (gitignored)
+├── render.yaml            # Render deployment blueprint
 ├── .env.example           # Environment variable template
 ├── requirements.txt       # Python dependencies
 └── README.md
@@ -70,46 +71,117 @@ CryptVault/
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Local Development
 
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
 
-### 1. Clone & Setup
+### 1. Clone
 ```bash
 git clone https://github.com/Abhi9101105/Crypt_vault.git
 cd Crypt_vault
 ```
 
-### 2. Backend Setup
+### 2. Backend
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate        # macOS/Linux
+# .venv\Scripts\activate          # Windows
 
 pip install -r requirements.txt
 
-# Create environment file
 cp .env.example .env
-# Edit .env and generate your secrets (instructions inside the file)
+# Edit .env — generate secrets using the commands inside the file
 
-# Start backend
 uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-### 3. Frontend Setup
+### 3. Frontend
 ```bash
 cd frontend
 npm install
-
-# Start frontend
-node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5173
+npm run dev
 ```
 
 ### 4. Open
 Navigate to **http://127.0.0.1:5173**
 
-> The first registered user automatically becomes **admin**.
+> ℹ️ The first registered user automatically becomes **admin**.
+
+---
+
+## ☁️ Production Deployment
+
+### Backend → Render
+
+#### Option A: One-click (Blueprint)
+1. Fork this repo
+2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
+3. Connect your GitHub repo
+4. Render reads `render.yaml` and creates the service automatically
+
+#### Option B: Manual Setup
+1. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Web Service**
+2. Connect your GitHub repo
+3. Configure:
+
+| Setting | Value |
+|---------|-------|
+| **Runtime** | Python |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `uvicorn backend.main:app --host 0.0.0.0 --port $PORT` |
+| **Plan** | Free |
+
+4. Set **Environment Variables** in Render dashboard:
+
+| Variable | Value |
+|----------|-------|
+| `ENVIRONMENT` | `production` |
+| `DATABASE_URL` | `sqlite:///./securevault.db` (or PostgreSQL URL) |
+| `JWT_SECRET` | Generate: `python3 -c "import secrets; print(secrets.token_urlsafe(48))"` |
+| `AUDIT_HMAC_SECRET` | Generate: `python3 -c "import secrets; print(secrets.token_urlsafe(48))"` |
+| `ENCRYPTION_KEYS` | Generate: `python3 -c "import base64,os; print('v1:'+base64.b64encode(os.urandom(32)).decode())"` |
+| `ACTIVE_KEY_ID` | `v1` |
+| `ALLOWED_ORIGINS` | `https://your-app.vercel.app` (your Vercel URL) |
+| `PYTHON_VERSION` | `3.11.11` |
+
+5. Click **Create Web Service**
+6. Copy the service URL (e.g., `https://cryptvault-api.onrender.com`)
+
+---
+
+### Frontend → Vercel
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) → **Add New** → **Project**
+2. Import your GitHub repo
+3. Configure:
+
+| Setting | Value |
+|---------|-------|
+| **Framework Preset** | Vite |
+| **Root Directory** | `frontend` |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `dist` |
+
+4. Set **Environment Variable**:
+
+| Variable | Value |
+|----------|-------|
+| `VITE_API_URL` | `https://cryptvault-api.onrender.com` (your Render URL) |
+
+5. Click **Deploy**
+
+---
+
+### Post-Deployment Checklist
+
+- [ ] Backend is live on Render (check `/api/auth/me` returns 401)
+- [ ] Frontend is live on Vercel
+- [ ] Update Render's `ALLOWED_ORIGINS` with your actual Vercel URL
+- [ ] Register first user (becomes admin)
+- [ ] Upload a test file
+- [ ] Verify download decrypts correctly
 
 ---
 
@@ -135,7 +207,7 @@ Navigate to **http://127.0.0.1:5173**
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `Referrer-Policy: no-referrer`
-- `Strict-Transport-Security` (production)
+- `Strict-Transport-Security` (production only)
 
 ---
 
@@ -143,7 +215,6 @@ Navigate to **http://127.0.0.1:5173**
 
 ### Automated (87 tests across 16 phases)
 ```bash
-# Start backend first, then:
 source .venv/bin/activate
 python3 test_all_phases.py
 ```
@@ -180,6 +251,7 @@ python3 test_all_phases.py
 | Encryption | PyCryptodome (AES-256-GCM) |
 | Auth | python-jose (JWT), passlib (Argon2) |
 | Styling | TailwindCSS + custom dark-mode design system |
+| Deployment | Render (backend) + Vercel (frontend) |
 
 ---
 

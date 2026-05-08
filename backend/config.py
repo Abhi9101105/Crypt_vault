@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 25 * 1024 * 1024
     allowed_origins: List[AnyHttpUrl | str] = Field(default_factory=lambda: ["http://localhost:5173"])
 
+    # Render injects PORT; used by uvicorn start command
+    port: int = 8000
+
     jwt_secret: str
     jwt_algorithm: str = "HS256"
     access_token_minutes: int = 15
